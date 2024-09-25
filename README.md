@@ -69,6 +69,12 @@ Navigate to Schedules on the EventBridge console and see the schedules you creat
 
 ![image](https://github.com/user-attachments/assets/9c02c091-cce4-4f0d-a188-e27783bb1449)
 
+2hrs later...if you check the time stamp and the ID of the instance is the same as the one created hours ago
+
+![image](https://github.com/user-attachments/assets/b352ba6b-9de1-47e7-9fa9-258ef60fd9a4)
+
+
+
 	
  At 6 am
  
