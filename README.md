@@ -1,6 +1,6 @@
 # RDS_snapshot_delete
 
-1. I create  an RDS database using a cloud formation template.
+1. I create  an RDS database using a cloud formation template. (In this template for the creation of the DB I didn't specify any values but I designed it to prompt the user to key in their desired variables from a list specified. Such a template can be reused and the list of values increased to the variable can also be stored in the parameter store which in my opinion is the perfect option.)
  
  
 ![DBINSTANCE](https://github.com/user-attachments/assets/c7408bff-a46d-48f6-a3dd-d86588a7bdc7)
@@ -47,9 +47,16 @@
 	
 6. Lastly create a cloudwatch event rule for deleting snapshots the same way as creating a snapshot rule so I followed steps 4 and 5 again. Here I have scheduled the date and time in such a way that the delete rule will be triggered every 3 hours from creation. Demonstration purposes only.
 
+![deletesnapshot1](https://github.com/user-attachments/assets/daee59b3-8138-4540-baca-b5f4f73c4954)
 
-7. I created another function that will be triggered for the deletion of creates snapshots and I tested it successfully but for me to ensure that it did what I desired, I reduced the time to minutes before changing it again. And remember that in testing the delete code you have to ensure that the snapshot is not in the creation process. Refresh until it is created otherwise the delete function will surely fail. Due to slow network issues, I couldn't get the snapshot in the delete phase so I decided to check the logs 
+Navigate to Schedules on the EventBridge console and see the schedules you created
 
+![image](https://github.com/user-attachments/assets/482a9f54-0de0-415a-a5c4-17d96fab1ab9)
+
+
+7. I created another function that will be triggered for the deletion of creates snapshots and I tested it successfully but for me to ensure that it did what I desired, I reduced the time to minutes before changing it again. And remember that in testing the delete code you have to ensure that the snapshot is not in the creation process. Refresh until it is created otherwise the delete function will surely fail. Due to slow network issues, I couldn't get the snapshot in the delete phase so I decided to check the logs, on the monitor tab on the lambda console and view Cloudwatch logs
+	
+![image](https://github.com/user-attachments/assets/e3bf4fb6-ce53-48ba-afbd-1da24a9b3224)
 
  ![image](https://github.com/user-attachments/assets/a669371a-d726-4805-a183-a42c402b5659)
 
@@ -57,7 +64,21 @@
 
  ![image](https://github.com/user-attachments/assets/24e381d6-d920-4c93-9085-0e87f02c0c73)
 
+8. Finally! The moment of truth
+   at 6 am- snapshot was created within the flexible window of 5 mins
 
+![image](https://github.com/user-attachments/assets/9c02c091-cce4-4f0d-a188-e27783bb1449)
+
+2hrs later...if you check the time stamp and the ID of the instance is the same as the one created hours ago
+
+![image](https://github.com/user-attachments/assets/b352ba6b-9de1-47e7-9fa9-258ef60fd9a4)
+
+
+
+	
+ At 6 am
+ 
+3hrs later...
 
 	
 
