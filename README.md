@@ -1,7 +1,9 @@
 # RDS_snapshot_delete
 
-	1. I create  an RDS database using a cloudformation template.
-	![cloudfdbinstance](https://github.com/user-attachments/assets/60342053-cc17-449d-9df2-e6cf1ef0a452)
+	1. I create  an RDS database using a cloud formation template.
+ 
+	![cfdbinstance](https://github.com/user-attachments/assets/db4c16d0-4803-4e7a-8e87-6eb4ccc3e2bb)
+
  
 ![DBINSTANCE](https://github.com/user-attachments/assets/c7408bff-a46d-48f6-a3dd-d86588a7bdc7)
 
@@ -36,18 +38,18 @@
 	 )
 	 #return (response);
 
-then i deployed the lamda function and tested 
+then I deployed the Lambda function and tested 
 
   ![testedsnapshotcreationcodelambda](https://github.com/user-attachments/assets/effb767d-b0a2-45c5-b274-9a9515c08103)
 
-		To automate the creation we will head straight to the cloud watch tab from  Events > Rules>create rule. Create a rule and define the cron expression which will shedule your rule to be triggered. This can fit into any scenario you just need to define the cron according to your uses case. In this case i decided to create a snapsot at 7am with a flexible window of 5mins which means it can create in that time frame.
+		To automate the creation we will head straight to the cloud watch tab from  Events > Rules> Create rule. Create a rule and define the cron expression which will schedule your rule to be triggered. This can fit into any scenario you just need to define the cron according to your use case. In this case, I decided to create a snapshot at 7 am with a flexible window of 5mins which means it can be created in that time frame.
 	
-	 select your target which is the lambda function for snapshots creation.  (I chose the create new role for this event. If you need to use a role ensure to add necessary permissions). Now wait for the scheduled trigger time and see that RDS snapshot has been created automatically
+	 select your target which is the lambda function for snapshot creation.  (I chose the create a new role for this event. If you need to use a role ensure to add necessary permissions). Now wait for the scheduled trigger time and see that the RDS snapshot has been created automatically
 	
 	
-	 Now periodically we have to delete them also. Otherwise cost for these RDS snapshot will be on the rise. So come to lambda tab again and create a lambda function for deleting snapshot like same as creating snapshot function.
+	 Now periodically we have to delete them also. Otherwise cost for these RDS snapshots will be on the rise. So come to lambda tab again and create a lambda function for deleting snapshots like same as creating a snapshot function.
 	
-	Here I want to delete snapshots which are more than 4 hours old since this is for demonstration purposes only. So this rule was created at 3.04am and by 7.04am we are expecting this snapshot to be deleted
+	Here I want to delete snapshots that are more than 4 hours old since this is for demonstration purposes only. So this rule was created at 3.04am and by 7.04am we are expecting this snapshot to be deleted
 
 	import json
 	import boto3
