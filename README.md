@@ -1,81 +1,64 @@
 # RDS_snapshot_delete
 
-	1. I create  an RDS database using a cloud formation template.
+1. I create  an RDS database using a cloud formation template.
  
-	![cfdbinstance](https://github.com/user-attachments/assets/db4c16d0-4803-4e7a-8e87-6eb4ccc3e2bb)
-
  
 ![DBINSTANCE](https://github.com/user-attachments/assets/c7408bff-a46d-48f6-a3dd-d86588a7bdc7)
 
-	2. I created a lambda role with permission 
+
+![cfdbinstance](https://github.com/user-attachments/assets/42676b79-1da3-4ce1-99ff-655aa3fe5dfd)
+
+
+2. I created a lambda role with permission 
 	AmazonRDSFullAccess
 	AWSLambdaBasicExecutionRole (managed and not custom)
 	AWSLambdaVPCAccessExecutionRole
-	![lrole2](https://github.com/user-attachments/assets/cf109de9-8372-4124-95a5-7cec98c0bce5)
 
-	3. Then I created a lambda function that will create snapshots for my DB instances. If the code ran successfully you will see a snapshot of the DB instance created. This a manual achievement so we are not going to get excites because we are going for all things "Automation". 
+ ![rdsrole](https://github.com/user-attachments/assets/5d8b0563-d15f-4877-8740-95f258af9a59)
+
+3. Then I created a lambda function that will automate the creation of my database snapshots. I deployed my code and tested it successfully and a snapshot was created. This is a manual intervention that is prone to error. So we are going for all things  "automation".
+
+![image](https://github.com/user-attachments/assets/08e2ab39-e372-4cc9-88e1-f9435c577a42)
+
+![image](https://github.com/user-attachments/assets/8d1b7cef-bb0f-4e7e-b2cb-ea40f25ef575)
+
+![image](https://github.com/user-attachments/assets/8e2cc026-e627-411a-9de0-f4799ec3bf43)
+
+
+
+   
+
+	
+5. To automate snapshot creation, from the cloud watch tab,  Events > Rules> Create rule. Create a rule with a defined cron expression and schedule your rule to be triggered.  Cron expressions can be done according to your use case. In this demo I will have my function create a snapshot at 6 am, once triggered. I chose a flexible window of 5mins which means it can be created in that time frame.
+
+![image](https://github.com/user-attachments/assets/87cc018f-c7f7-4763-932d-ffa982a66e1f)
+
+![image](https://github.com/user-attachments/assets/f2c89084-2261-40f5-9dea-c589ec952b31)
+
+   
+
+
+5. select your target which is the lambda function for snapshots creation.  (I chose the create a new role for this event. If you need to use a role ensure to add necessary permissions). Now wait for the scheduled trigger time and see that the RDS snapshot has been created automatically
+   
+
+![image](https://github.com/user-attachments/assets/23e6297c-5958-4b12-9788-f3bb720ecfcd)
+
  
-	import json
-	import boto3
-	import datetime
-	from datetime import datetime
 	
-	def lambda_handler(event, context):
-	 client = boto3.client('rds')
-	 now = datetime.now()
-	 date = now.strftime("%d-%m-%Y-%H-%M-%S")
-	 tagname = now.strftime("%d-%m-%Y")
-	 #print("date and time =", date)
-	 response = client.create_db_snapshot(
-	 DBSnapshotIdentifier='sudip-test-db-identifier-{}'.format(date),
-	 DBInstanceIdentifier='sudip-test-db-identifier',
-	 Tags=[
-	 {
-	 'Key': 'backupon',
-	 'Value': tagname
-	 },
-	 ]
-	 )
-	 #return (response);
-
-then I deployed the Lambda function and tested 
-
-  ![testedsnapshotcreationcodelambda](https://github.com/user-attachments/assets/effb767d-b0a2-45c5-b274-9a9515c08103)
-
-		To automate the creation we will head straight to the cloud watch tab from  Events > Rules> Create rule. Create a rule and define the cron expression which will schedule your rule to be triggered. This can fit into any scenario you just need to define the cron according to your use case. In this case, I decided to create a snapshot at 7 am with a flexible window of 5mins which means it can be created in that time frame.
-	
-	 select your target which is the lambda function for snapshot creation.  (I chose the create a new role for this event. If you need to use a role ensure to add necessary permissions). Now wait for the scheduled trigger time and see that the RDS snapshot has been created automatically
-	
-	
-	 Now periodically we have to delete them also. Otherwise cost for these RDS snapshots will be on the rise. So come to lambda tab again and create a lambda function for deleting snapshots like same as creating a snapshot function.
-	
-	Here I want to delete snapshots that are more than 4 hours old since this is for demonstration purposes only. So this rule was created at 3.04am and by 7.04am we are expecting this snapshot to be deleted
-
-	import json
-	import boto3
-	from datetime import datetime
-	from datetime import timedelta
-	
-	def lambda_handler(event, context):
-	 client = boto3.client('rds')
-	 now = datetime.now() - timedelta(days=4) #change the retention days as per your requirement.
-	 date = now.strftime("%d-%m-%Y")
-	 snapshots = client.describe_db_snapshots(DBInstanceIdentifier= 'sudip-test-db-identifier', SnapshotType='manual')
-	 print("These are the snapshots {} here",snapshots['DBSnapshots'])
-	 for i in snapshots['DBSnapshots']:
-	 
-	ID = i['DBSnapshotIdentifier']
-	 S_type = i['SnapshotType']
-	 S_date= i['SnapshotCreateTime']
-	 S_date = S_date.strftime("%d-%m-%Y")
-	 print("These are the snapshots here")
-	 print(ID, S_date)
-	 if S_type == "manual":
-	 if S_date == date:
-	 client.delete_db_snapshot( DBSnapshotIdentifier= ID )
-  
- Lastly create a cloudwatch event rule for deleting snapshot sameway like creating snapshot rule. Here I have scheduled the date and time in such way that the delete rule will be triggered on every saturday at 2pm for demonstration purposes only. I would like to save costs 
+6. Lastly create a cloudwatch event rule for deleting snapshots the same way as creating a snapshot rule so I followed steps 4 and 5 again. Here I have scheduled the date and time in such a way that the delete rule will be triggered every 3 hours from creation. Demonstration purposes only.
 
 
-	![RULES](https://github.com/user-attachments/assets/1f8e598e-1fc2-4197-b100-a0fd6e8dd548)
+7. I created another function that will be triggered for the deletion of creates snapshots and I tested it successfully but for me to ensure that it did what I desired, I reduced the time to minutes before changing it again. And remember that in testing the delete code you have to ensure that the snapshot is not in the creation process. Refresh until it is created otherwise the delete function will surely fail. Due to slow network issues, I couldn't get the snapshot in the delete phase so I decided to check the logs 
+
+
+ ![image](https://github.com/user-attachments/assets/a669371a-d726-4805-a183-a42c402b5659)
+
+ ![image](https://github.com/user-attachments/assets/3087468d-d0c4-454f-90e4-b4a086e21f82)
+
+ ![image](https://github.com/user-attachments/assets/24e381d6-d920-4c93-9085-0e87f02c0c73)
+
+
+
+	
+
 
