@@ -47,6 +47,8 @@
 	
 6. Lastly create a cloudwatch event rule for deleting snapshots the same way as creating a snapshot rule so I followed steps 4 and 5 again. Here I have scheduled the date and time in such a way that the delete rule will be triggered every 3 hours from creation. Demonstration purposes only.
 
+![deletesnapshot1](https://github.com/user-attachments/assets/daee59b3-8138-4540-baca-b5f4f73c4954)
+
 
 7. I created another function that will be triggered for the deletion of creates snapshots and I tested it successfully but for me to ensure that it did what I desired, I reduced the time to minutes before changing it again. And remember that in testing the delete code you have to ensure that the snapshot is not in the creation process. Refresh until it is created otherwise the delete function will surely fail. Due to slow network issues, I couldn't get the snapshot in the delete phase so I decided to check the logs, on the monitor tab on the lambda console and view Cloudwatch logs
 	
