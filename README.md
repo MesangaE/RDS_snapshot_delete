@@ -65,6 +65,10 @@ Navigate to Schedules on the EventBridge console and see the schedules you creat
  ![image](https://github.com/user-attachments/assets/24e381d6-d920-4c93-9085-0e87f02c0c73)
 
 8. Finally! The moment of truth
+   at 6 am- snapshot was created within the flexible window of 5 mins
+
+![image](https://github.com/user-attachments/assets/9c02c091-cce4-4f0d-a188-e27783bb1449)
+
 	
  At 6 am
  
