@@ -1,0 +1,66 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Create an RDS Database Instance",
+    "Parameters": {
+        "DBInstanceClass": {
+            "Description": "DB instance class",
+            "Type": "String",
+            "Default": "db.t2.micro",
+            "AllowedValues": ["db.t3.micro", "db.t4g.micro"],
+            "ConstraintDescription": "Must select a valid DB instance class"
+        },
+        "DBAllocatedStorage": {
+            "Description": "Allocated storage for the DB",
+            "Type": "Number",
+            "Default": 20,
+            "MinValue": 5,
+            "MaxValue": 1024,
+            "ConstraintDescription": "Storage size must be between 5 and 1024 GB"
+        },
+        "DBMasterUsername": {
+            "Description": "Master username for the DB",
+            "Type": "String",
+            "MinLength": 1,
+            "MaxLength": 16,
+            "AllowedPattern": "[a-zA-Z0-9]+",
+            "ConstraintDescription": "Must be alphanumeric and between 1 and 16 characters"
+        },
+        "DBMasterPassword": {
+            "Description": "Master password for the DB",
+            "Type": "String",
+            "MinLength": 8,
+            "MaxLength": 41,
+            "AllowedPattern": "[a-zA-Z0-9]+",
+            "ConstraintDescription": "Must be alphanumeric and between 8 and 41 characters"
+        },
+        "DBName": {
+            "Description": "Name of the initial database",
+            "Type": "String",
+            "Default": "mydatabase",
+            "MinLength": 1,
+            "MaxLength": 64,
+            "AllowedPattern": "[a-zA-Z0-9]+",
+            "ConstraintDescription": "Must be alphanumeric and between 1 and 64 characters"
+        }
+    },
+    "Resources": {
+        "MyDBInstance": {
+            "Type": "AWS::RDS::DBInstance",
+            "Properties": {
+                "DBInstanceClass": { "Ref": "DBInstanceClass" },
+                "AllocatedStorage": { "Ref": "DBAllocatedStorage" },
+                "DBInstanceIdentifier": "mydbinstance",
+                "Engine": "mysql",
+                "MasterUsername": { "Ref": "DBMasterUsername" },
+                "MasterUserPassword": { "Ref": "DBMasterPassword" },
+                "DBName": { "Ref": "DBName" }
+            }
+        }
+    },
+    "Outputs": {
+        "DBEndpoint": {
+            "Description": "Endpoint of the newly created RDS instance",
+            "Value": { "Fn::GetAtt": ["MyDBInstance", "Endpoint.Address"] }
+        }
+    }
+}
