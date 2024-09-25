@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/e3bf4fb6-ce53-48ba-afbd-1da24a9b3224)# RDS_snapshot_delete
+# RDS_snapshot_delete
 
 1. I create  an RDS database using a cloud formation template. (In this template for the creation of the DB I didn't specify any values but I designed it to prompt the user to key in their desired variables from a list specified. Such a template can be reused and the list of values increased to the variable can also be stored in the parameter store which in my opinion is the perfect option.)
  
@@ -56,7 +56,7 @@ Navigate to Schedules on the EventBridge console and see the schedules you creat
 
 7. I created another function that will be triggered for the deletion of creates snapshots and I tested it successfully but for me to ensure that it did what I desired, I reduced the time to minutes before changing it again. And remember that in testing the delete code you have to ensure that the snapshot is not in the creation process. Refresh until it is created otherwise the delete function will surely fail. Due to slow network issues, I couldn't get the snapshot in the delete phase so I decided to check the logs, on the monitor tab on the lambda console and view Cloudwatch logs
 	
-!
+![image](https://github.com/user-attachments/assets/e3bf4fb6-ce53-48ba-afbd-1da24a9b3224)
 
  ![image](https://github.com/user-attachments/assets/a669371a-d726-4805-a183-a42c402b5659)
 
