@@ -64,14 +64,19 @@ Navigate to Schedules on the EventBridge console and see the schedules you creat
 
  ![image](https://github.com/user-attachments/assets/24e381d6-d920-4c93-9085-0e87f02c0c73)
 
-8. Finally! The moment of truth
+8. Finally! The moment of truth!
+   
    at 6 am- snapshot was created within the flexible window of 5 mins
 
 ![image](https://github.com/user-attachments/assets/9c02c091-cce4-4f0d-a188-e27783bb1449)
 
+
+
 2hrs later...if you check the time stamp and the ID of the instance is the same as the one created hours ago
 
 ![image](https://github.com/user-attachments/assets/b352ba6b-9de1-47e7-9fa9-258ef60fd9a4)
+
+
 
 Don't forget to stop your instance or delete that stack once done. We are paying only for what we use. 
 
@@ -82,9 +87,7 @@ or you can use the console
 ![stack delete](https://github.com/user-attachments/assets/a24d511d-e6c1-42ce-af6d-fdafb394efe9)
 
 	
- At 6 am
- 
-3hrs later...
+.
 
 	
 
