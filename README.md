@@ -78,6 +78,9 @@ Don't forget to stop your instance or delete that stack once done. We are paying
 aws cloudformation delete-stack --stack-name DBInstance --region eu-north-1
 
 or you can use the console
+
+![stack delete](https://github.com/user-attachments/assets/a24d511d-e6c1-42ce-af6d-fdafb394efe9)
+
 	
  At 6 am
  
