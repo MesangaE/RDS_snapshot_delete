@@ -1,6 +1,6 @@
 # RDS_snapshot_delete
 
-1. I create  an RDS database using a cloud formation template. (In this template for the creation of the DB I didn't specify any values but I designed it to prompt the user to key in their desired variables from a list specified. Such a template can be reused and the list of values increased to the variable can also be stored in the parameter store which in my opinion is the perfect option.)
+1. I create  an RDS database using a cloud formation template. (In this template for the creation of the DB I didn't specify any values but I designed it to prompt the user to key in their desired variables from a list specified. Templates such as this one, can be reused and the list of values increased. variables can also be stored in the parameter store, which in my opinion, is the perfect option.)
  
  
 ![DBINSTANCE](https://github.com/user-attachments/assets/c7408bff-a46d-48f6-a3dd-d86588a7bdc7)
